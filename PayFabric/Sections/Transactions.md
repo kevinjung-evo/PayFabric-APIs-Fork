@@ -1,7 +1,7 @@
 ﻿Transactions
 ============
 
-The PayFabric Transactions API is used for creating, and processing payment transactions. 'Customer' field is required to save wallet entry for later or future use. Please note that all requests require API authentication, see our [guide](Authentication.md) on how to authenticate.
+The PayFabric Transactions API is used for creating and processing payment transactions. The 'Customer' field is required to save a wallet entry for later or future use. Please note that all requests require API authentication, see our [guide](Authentication.md) on how to authenticate.
 
 Create a Transaction
 --------------------
@@ -45,9 +45,9 @@ Create a Transaction
 }
 </pre>
 
-Please note that **bold** fields are required fields, and all others are optional. For more information and descriptions on available fields please see our [object reference](Objects.md#transaction).
+Please note that **bold** fields are required fields, and all others are optional. For more information and descriptions on available fields please see our [object reference](Objects.md#transaction). 
 
-`SetupId` is the [Gateway Profile](https://github.com/PayFabric/Portal/blob/master/PayFabric/Sections/Configure%20Portal.md#gateway-profile) Name. It is a per-account identifier of a profile containing the credentials for a given credit card processing merchant account. The Gateway Profile Name can also be retrieved through [API call](https://github.com/PayFabric/APIs/blob/master/PayFabric/Sections/Payment%20Gateway%20Profiles.md#retrieve-payment-gateway-profiles).
+`SetupId` is the [Gateway Profile](https://github.com/PayFabric/Portal/blob/master/PayFabric/Sections/Configure%20Portal.md#gateway-profile) Name. It is a per-account identifier of a profile containing the credentials for a given credit card processing merchant account. The Gateway Profile Name can also be retrieved through calling the [Payment Gateway Profiles API](https://github.com/PayFabric/APIs/blob/master/PayFabric/Sections/Payment%20Gateway%20Profiles.md#retrieve-payment-gateway-profiles).
 `ECheckSetupId` which should be the Gateway Profile Name for an ACH/eCheck payment method can be used in addition to, or in place of `SetupId`.
 
 ###### Related Reading
@@ -64,7 +64,7 @@ Please note that **bold** fields are required fields, and all others are optiona
 </pre>
 
 ###### Response Header
-If create transaction with the gateway whose SurchargeRate greater than 0, and populated a credit card on this transaction, then PayFabric will return the surcharge fields in Response Header like below screenshot.
+When creating a credit card transaction whose gateway contains a SurchargeRate greater than 0, PayFabric will return the surcharge fields in the Response Header like the below screenshot:
 
 ![CreateUpdateTrxWithSurchargeResponseHeader](https://raw.githubusercontent.com/PayFabric/Portal/master/PayFabric/Sections/Screenshots/CreateUpdateTrxWithSurchargeResponseHeader.png "CreateUpdateTrxWithSurchargeResponseHeader") 
 
@@ -77,13 +77,13 @@ Update a Transaction
 <pre>
 {
     "Key": "151013003793",
-    "Card":{
-  "ID": "8b4a9102-8207-4e8f-99fa-01c6f623ddb8"
-  }
+    "Card": {
+      "ID": "8b4a9102-8207-4e8f-99fa-01c6f623ddb8"
+    }
 }
 </pre>
 
-Please note that the **Key** field is the only required field for an update. Only the fields that need updating should be included, see the **Create a Transaction** endpoint for more information.
+Please note that the `Key` field is the only required field for an update. Only the fields that need updating should be included, see the **Create a Transaction** endpoint for more information.
 
 ###### Response
 <pre>
@@ -93,7 +93,7 @@ Please note that the **Key** field is the only required field for an update. Onl
 </pre>
 
 ###### Response Header
-If update transaction with the gateway whose SurchargeRate greater than 0, and populated a credit card on this transaction, then PayFabric will return the surcharge fields in Response Header like below screenshot.
+When creating a credit card transaction whose gateway contains a SurchargeRate greater than 0, PayFabric will return the surcharge fields in the Response Header like the below screenshot:
 
 ![CreateUpdateTrxWithSurchargeResponseHeader](https://raw.githubusercontent.com/PayFabric/Portal/master/PayFabric/Sections/Screenshots/CreateUpdateTrxWithSurchargeResponseHeader.png "CreateUpdateTrxWithSurchargeResponseHeader") 
 
@@ -107,7 +107,8 @@ Process a Transaction
 
 ###### Response
 <pre>
-"AVSAddressResponse": null,
+{
+    "AVSAddressResponse": null,
     "AVSZipResponse": null,
     "AuthCode": "378AUE",
     "CVV2Response": "NotSet",
@@ -150,12 +151,12 @@ Create and Process a Transaction
 ###### Request for create and process transaction via a gateway
 <pre>
 {
-  <b>"Amount": "29.99"</b>,
+  "Amount": "29.99",
   "BatchNumber": "",
-  <b>"Card":</b> {
-  <b>"ID": "8b4a9102-8207-4e8f-99fa-01c6f623ddb8"</b>
+  "Card": {
+    "ID": "8b4a9102-8207-4e8f-99fa-01c6f623ddb8"
   },
-  <b>"Currency": "USD"</b>,
+  "Currency": "USD",
   "Customer": "JOHNDOE0001",
   "Document": {
     "Head": [],
@@ -166,7 +167,7 @@ Create and Process a Transaction
   "ReferenceKey": null,
   "ReferenceTrxs": [],
   "ReqAuthCode": "",
-  <b>"SetupId": "EVO US_CC"</b>,
+  "SetupId": "EVO US_CC",
   "Shipto": {
     "City": "",
     "Country": "",
@@ -183,7 +184,7 @@ Create and Process a Transaction
   "TrxUserDefine2": "",
   "TrxUserDefine3": "",
   "TrxUserDefine4": "",
-  <b>"Type": "Sale"</b>
+  "Type": "Sale"
 }
 </pre>
 
@@ -196,8 +197,7 @@ Create and Process a Transaction
     <b>"Type": "sale",</b>
     <b>"ProcessingMethod": "CardPresent",</b>
     <b>"Terminal": "T1",</b>
-    "Card":
-    {
+    "Card": {
         "Billto": {
             "City": "LA",
             "Country": "UK",
@@ -236,7 +236,7 @@ Create and Process a Transaction
 
 Please note that **bold** fields are required fields, and all others are optional. For more information and descriptions on available fields please see our [object reference](Objects.md). 
 
-PayFabric support to create wallet either from [API](Wallets.md) or [Hosted Wallet Page](https://github.com/PayFabric/Hosted-Pages/blob/master/Sections/Wallet%20Page.md), we highly recommand use hosted wallet page to create wallet for security, and get the wallet ID through [Wallet Retrieve](Wallets.md#retrieve-credit-cards--echecks) API call.
+PayFabric supports creating wallets either from the [Wallets API](Wallets.md) or [Hosted Wallet Page](https://github.com/PayFabric/Hosted-Pages/blob/master/Sections/Wallet%20Page.md). We highly recommend using the hosted wallet page for security, and retrieve the wallet ID through the [Retrieve Wallet](Wallets.md#retrieve-credit-cards--echecks) API call.
 
 ###### Related Reading
 * [How to Submit Level 2 and 3 Fields](Level%202%20and%20Level%203%20Fields.md)
@@ -621,14 +621,14 @@ This request accepts the below query string parameters to add options. You can u
 Referenced Transaction(s): Capture (Ship), Void or Refund (Credit)
 ---------------------------------------------------------
 
-Referenced transaction uses the original transaction Key as the referenced factor to subsequently process a new transaction. There’re 3 types of referenced transactions: Void, Capture (Ship) and Refund (Credit). They all use the transaction Key from the original transaction to process the new transaction.
+Referenced transactions use the original transaction key as the `ReferenceKey` to subsequently process a new transaction. There are 3 types of referenced transactions: Void, Capture (Ship) and Refund (Credit). They all use the `TrxKey` from the original transaction to process the new transaction.
 
-When specifying an amount capture or refund, note that over-capture and refunding higher amount than the original transaction is not allowed.
+When specifying an amount to capture or refund, note that over-capture and refunding a higher amount than the original transaction is not allowed.
 
 #### Capture (Ship)
 
-* `GET /payment/api/reference/{TransactionKey}?trxtype=Capture` will attempt to execute and finalize (capture) an authorization transaction, also known as Book transactions.
-* `POST /payment/api/transaction/process` will attempt to execute and finalize (capture) a pre-authorized transaction with specific amount, if `Amount` is not provided in request body, it will capture with authorized amount. if `Amount` is provoided in request body, it could be able to capture an authorization transaction multiple times, which depends on what gateway been used. (Note: Following gateways support multiple captures: EVO PayFabric, Authorize.Net, USAePay & Payeezy (aka First Data GGE4).)
+* `GET /payment/api/reference/{TransactionKey}?trxtype=Capture` will attempt to execute and finalize (capture) a pre-authorized transaction, also known as a Book transaction.
+* `POST /payment/api/transaction/process` will attempt to execute and finalize (capture) a pre-authorized transaction with a specific amount. If `Amount` is not provided in the request body, it will capture the full pre-authorized amount. If `Amount` is provided in request body, it could be able to capture an authorization transaction multiple times, depending on the gateway being used. (Note: Following gateways support multiple captures: EVO PayFabric, Authorize.Net, USAePay & Payeezy (aka First Data GGE4).)
 
 ###### Request
 <pre>
@@ -636,21 +636,21 @@ When specifying an amount capture or refund, note that over-capture and refundin
   "Amount": "1",
   "Type": "Capture",
   "ReferenceKey": "151013003792",
-   "Document": {
-       "Head": [ 
-        {
-               <b>"Name":"CaptureComplete",</b>
-               <b> "Value":false</b>
-        }
-     ] 
+  "Document": {
+    "Head": [
+      {
+        "Name": "CaptureComplete",
+        "Value": false
+      }
+    ]
   }
 }
 </pre>
-<b>Note:</b> CaptureComplete = true means this is the last capture transaction, no capture allowed for the original authorization transaction; CaptureComplete = false means this is not the last capture transaction, it allows to do multiple captures for the original authorization transaction. CaptureComplete will be set to true if pass invalid value or don't pass any value. For **EVO gateway profile**, If over capture or transactions include tip amount or incremental amount, CaptureComplete will be set to true automatically whatever the input value is. This logic is not applied with other gateways' transactions other than EVO.
+<b>Note:</b> CaptureComplete = true means this is the last capture transaction, no additional captures allowed for the original authorization transaction. CaptureComplete = false means this is not the last capture transaction, it allows to do multiple subsequent captures for the original authorization transaction. CaptureComplete will automatically be set to true if passed an invalid value or a value is not provided. For **EVO gateway profile**, if over-capture or transactions includea  tip amount or incremental amount, CaptureComplete will be set to true automatically whatever the input value is. This logic is not applied with other gateways' transactions other than EVO.
 
 #### Void
 
-* `GET /payment/api/reference/{TransactionKey}?trxtype=VOID` or `POST /transaction/process` with following request will attempt to cancel a transaction that has already been processed successfully with a payment gateway. PayFabric attempts to reverse the transaction by submitting a VOID transaction before settlement with the bank, if cancellation is not possible a refund (credit) must be performed.
+* `GET /payment/api/reference/{TransactionKey}?trxtype=VOID` or `POST /transaction/process` with the following request will attempt to cancel a transaction that has already been processed successfully with a payment gateway. PayFabric attempts to reverse the transaction by submitting a VOID transaction before settlement with the bank. If cancellation is not possible, a refund (credit) must be performed.
 
 ###### Request
 <pre>
@@ -662,7 +662,7 @@ When specifying an amount capture or refund, note that over-capture and refundin
 
 #### Refund（Reference)
 
-A referenced refund will refund against an original settled payment transaction.
+A referenced refund will refund against the original settled payment transaction.
 
 To issue a full refund:
 > `GET /payment/api/reference/{TransactionKey}?trxtype=Refund`
@@ -688,7 +688,7 @@ Or
 }
 </pre>
 
-Note: `ReferenceKey` is the initial processed transaction's `TrxKey`. If `Amount` is not provided in request body for Refund transaction, it will processed with original transaction amount. If `Amount` is provided, it will process partial refund with the specific amount.
+Note: `ReferenceKey` is the initial processed transaction's `TrxKey`. If `Amount` is not provided in the request body, it will process with the original transaction amount. If `Amount` is provided, it will process a partial refund with the specific amount.
 
 ###### Response
 <pre>
@@ -725,10 +725,10 @@ Note: `ReferenceKey` is the initial processed transaction's `TrxKey`. If `Amount
 }
 </pre>
 
-Refund (Non-Reference)
------------------
+#### Refund (Non-Reference)
 
-Without referencing an original payment transaction to refund against, a non-referenced refund can processed in the same manner as processing a normal transaction with `Type` set to `Refund`:
+
+Without referencing an original payment transaction to refund against, a non-referenced refund can be processed in the same manner as processing a normal transaction with `Type` set to `Refund`:
 * Invoke [Create and Process a Transaction](#create-and-process-a-transaction) API to submit and process the transaction.
   > `POST /payment/api/transaction/process?cvc={CVCValue}`
 
